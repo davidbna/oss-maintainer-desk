@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OSS Maintainer Desk</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="topbar" aria-label="Repository controls">
+        <div class="brand-block">
+          <p class="eyebrow">Local-first OSS triage</p>
+          <h1>OSS Maintainer Desk</h1>
+        </div>
+
+        <form id="repo-form" class="repo-form">
+          <label>
+            <span>Repository</span>
+            <input id="repo-input" name="repo" type="text" value="openai/openai-python" autocomplete="off" placeholder="owner/repo">
+          </label>
+          <label>
+            <span>GitHub token</span>
+            <input id="token-input" name="token" type="password" autocomplete="off" placeholder="optional">
+          </label>
+          <div class="button-row">
+            <button type="submit" class="primary-button" title="Fetch and analyze repository">Analyze repository</button>
+            <button type="button" id="sample-button" class="ghost-button" title="Use built-in sample data">Load sample</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="workspace">
+        <aside class="panel queue-panel" aria-label="Maintainer queue">
+          <div class="panel-heading">
+            <h2>Queue</h2>
+            <p id="status-text">Ready</p>
+          </div>
+          <div class="metric-grid" id="metric-grid">
+            <div class="metric"><strong>0</strong><span>Open issues</span></div>
+            <div class="metric"><strong>0</strong><span>Open PRs</span></div>
+            <div class="metric"><strong>0</strong><span>Stale</span></div>
+            <div class="metric"><strong>0</strong><span>Unlabeled</span></div>
+          </div>
+          <div class="health-band" id="health-band" aria-label="Repository health visualization"></div>
+          <div id="queue-list" class="queue-list"></div>
+        </aside>
+
+        <section class="panel brief-panel" aria-label="Generated maintainer brief">
+          <div class="panel-heading split-heading">
+            <div>
+              <h2>Weekly Brief</h2>
+              <p id="brief-meta">Generate a report from a repository or sample data.</p>
+            </div>
+            <div class="button-row compact">
+              <button type="button" id="copy-button" class="icon-button" title="Copy Markdown">Copy</button>
+              <button type="button" id="download-button" class="icon-button" title="Download Markdown">Download</button>
+            </div>
+          </div>
+          <textarea id="brief-output" spellcheck="false" aria-label="Markdown maintainer brief"></textarea>
+        </section>
+
+        <aside class="panel ai-panel" aria-label="AI prompt workflow">
+          <div class="panel-heading">
+            <h2>AI Assist</h2>
+            <p>Review first, then paste into your approved AI workflow.</p>
+          </div>
+          <label class="stacked">
+            <span>Prompt goal</span>
+            <select id="prompt-mode">
+              <option value="weekly">Weekly maintainer summary</option>
+              <option value="release">Release notes draft</option>
+              <option value="contributors">Contributor next actions</option>
+            </select>
+          </label>
+          <button type="button" id="prompt-button" class="primary-button wide" title="Build AI prompt from the current brief">Build prompt</button>
+          <textarea id="prompt-output" spellcheck="false" aria-label="AI prompt output"></textarea>
+        </aside>
+      </section>
+    </main>
+
+    <template id="queue-item-template">
+      <article class="queue-item">
+        <div>
+          <p class="queue-title"></p>
+          <p class="queue-detail"></p>
+        </div>
+        <span class="severity"></span>
+      </article>
+    </template>
+
+    <script src="src/maintainer-desk.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
